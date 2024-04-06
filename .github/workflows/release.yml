@@ -28,6 +28,8 @@ jobs:
           virtualenv env --python=python3
           cd env
           source bin/activate
+          ls
+          pwd
           pip install -r .\requirements.txt
 
       - name: Login to Docker Hub
