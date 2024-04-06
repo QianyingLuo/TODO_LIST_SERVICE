@@ -4,7 +4,9 @@ RUN pip install --upgrade pip
 RUN apk update && apk add --no-cache --update git
 
 COPY requirements.txt ./
-RUN pip install -r .\requirements.txt
+RUN ls
+RUN pwd
+RUN pip install -r requirements.txt
 
 FROM python:3.11-alpine as deploy
 
