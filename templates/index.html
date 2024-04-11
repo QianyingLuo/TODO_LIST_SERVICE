@@ -10,6 +10,12 @@
     <!-- Plantilla de Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css"
           integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+            crossorigin="anonymous"></script>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,8 +37,9 @@
                             <input type="text" name="contenido_tarea" placeholder="Tarea" class="form-control"
                                    autofocus>
                             <div class="d-flex flex-row my-4" style="height: 30px;">
-                                <label for="exampleSelect1" class="form-label mb-0 mr-2 my-2">Categoría</label>
-                                <select class="form-select flex-grow-1" id="exampleSelect1" name="categoria_tarea">
+                                <label for="selectCategoria1" class="form-label mb-0 mr-2 my-1">Categoría</label>
+                                <select class="form-select flex-grow-1 categoriaBorder" id="selectCategoria1"
+                                        name="categoria_tarea">
                                     <option value="Personal">Personal</option>
                                     <option value="Trabajo">Trabajo</option>
                                     <option value="Otro">Otro</option>
@@ -40,12 +47,11 @@
                             </div>
 
                             <div class='input-group date mt-2'>
-                                <label class="mr-2">Fecha límite</label>
+                                <label class="mr-2 mt-2">Fecha límite</label>
                                 <div class="d-flex flex-row">
                                     <input type='datetime-local' class="form-control" name="datepicker">
-                                    <span class="input-group-addon w-auto">
-                                        <span class="glyphicon glyphicon-calendar align-middle"></span>
-                                    </span>
+                                    <span class="input-group-addon w-auto"></span>
+                                    <span class="glyphicon glyphicon-calendar align-middle"></span>
                                 </div>
                             </div>
                         </div>
@@ -59,9 +65,9 @@
                         {% for tarea in lista_de_tareas %} <!-- Jinja -->
                         <li class="list-group-item">
                                 <span class="{% if tarea.hecha == true %} tarea_hecha {% endif %}">
-                                    {{tarea.contenido}} ({{tarea.categoria}})
+                                    {{tarea.contenido}} ({{tarea.categoria}}) <br/>
+                                    Fecha límite: {{tarea.fecha}}
                                 </span>
-
                             <a href="/tarea-hecha/{{tarea.id}}" style="text-decoration:none">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green"
                                      class="bi bi-check2-square" viewBox="0 0 16 16">
@@ -76,10 +82,58 @@
                                     <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
                                 </svg>
                             </a>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                    data-target="#exampleModal">
+                                Editar
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form action="/editar-tarea/{{tarea.id}}" method="post">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Editar tarea</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <input type="text" name="editar_tarea" placeholder="Nuevo nombre"
+                                                       class="form-control"
+                                                       autofocus>
+                                                <label for="selectCategoria2" class="form-label mb-0 mr-2 my-2">Categoría</label>
+                                                <select class="form-select flex-grow-1 border-2 categoriaBorder"
+                                                        id="selectCategoria2" name="nueva_categoria">
+                                                    <option value="Personal">Personal</option>
+                                                    <option value="Trabajo">Trabajo</option>
+                                                    <option value="Otro">Otro</option>
+                                                </select>
+                                                <div class='input-group date mt-2'>
+                                                    <label class="mr-2 mt-2">Fecha límite</label>
+                                                    <div class="d-flex flex-row">
+                                                        <input type='datetime-local' class="form-control" name="nuevo_datepicker">
+                                                        <span class="input-group-addon w-auto"></span>
+                                                        <span class="glyphicon glyphicon-calendar align-middle"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                    Cerrar
+                                                </button>
+                                                <button type="submit" class="btn btn-primary">Guardar cambio</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </li> <!-- li para cada uno de los elementos -->
                         {% endfor %}
                     </ul>
-
                 </div>
             </div>
         </div>

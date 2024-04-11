@@ -39,6 +39,15 @@ def hecha(id):
     db.session.commit()
     return redirect(url_for("home"))
 
+@app.route("/editar-tarea/<id>", methods=["POST"])
+def editar(id):
+    nueva_fecha = datetime.fromisoformat(request.form["nuevo_datepicker"])
+    db.session.query(Tarea).filter_by(id=int(id)).update({"contenido": request.form["editar_tarea"]})
+    db.session.query(Tarea).filter_by(id=int(id)).update({"categoria": request.form["nueva_categoria"]})
+    db.session.query(Tarea).filter_by(id=int(id)).update({"fecha": nueva_fecha})
+    db.session.commit()
+    return redirect(url_for("home"))
+
 if __name__ == "__main__":
     # En la siguiente linea estamos indicando a SQLAlchemy que cree, si no existen,
     # las tablas de todos los modelos que encuentre en models.py

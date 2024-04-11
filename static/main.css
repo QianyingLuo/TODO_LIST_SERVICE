@@ -1,6 +1,7 @@
 .titulo {
-  font-family: "Permanent Marker", cursive;
-  font-weight: 400;
+  font-family: "Josefin Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
   font-style: normal;
 }
 
@@ -8,6 +9,11 @@ body {
     background: #FFEFBA;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to right, #FFFFFF, #FFEFBA);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to right, #FFFFFF, #FFEFBA); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.categoriaBorder {
+    border: 2px solid black;
+    border-radius: 255px 25px 225px 25px / 25px 225px 25px 255px;
 }
 
 .tarea_hecha {
