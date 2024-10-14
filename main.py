@@ -169,4 +169,4 @@ if __name__ == "__main__":
     # En la siguiente linea estamos indicando a SQLAlchemy que cree, si no existen,
     # las tablas de todos los modelos que encuentre en models.py
     db.Base.metadata.create_all(db.engine)
-    app.run(debug=True)
+    app.run(debug=False)
