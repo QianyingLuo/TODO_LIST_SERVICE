@@ -10,4 +10,3 @@ blinker~=1.7.0
 itsdangerous~=2.1.2
 greenlet~=3.0.3
 Flask~=3.0.2
-gunicorn
