@@ -63,7 +63,7 @@ def login():
 @app.before_request  # registrar la función para que se ejecute antes de cada request, para verificar si la persona ha iniciado la sesión o no
 def load_logged_in_user():
     user_id = session.get('user_id')
-    print(user_id)
+    
     if user_id is None:
         g.user = None
     else:
@@ -97,7 +97,6 @@ def tareas():
 
 
 @app.route("/crear-tarea", methods=["POST"])
-@login_required
 def crear():
     contenido = request.form["contenido_tarea"]
     categoria = request.form["categoria_tarea"]
@@ -127,7 +126,6 @@ def crear():
 
 
 @app.route("/eliminar-tarea/<id>")  # id es una variable
-@login_required
 def eliminar(id):
     tarea = db.session.query(Tarea).filter_by(id=int(id))
     tarea.delete()
@@ -136,7 +134,6 @@ def eliminar(id):
 
 
 @app.route("/tarea-hecha/<id>")
-@login_required
 def hecha(id):
     tarea = db.session.query(Tarea).filter_by(id=int(id)).first()
     tarea.hecha = not (tarea.hecha)
@@ -145,8 +142,8 @@ def hecha(id):
 
 
 @app.route("/editar-tarea/<id>", methods=["POST"])
-@login_required
 def editar(id):
+    print("IDDDD", id)
     nuevo_contenido = request.form["editar_tarea"]
     nueva_categoria = request.form["nueva_categoria"]
     nueva_fecha_string = request.form["nuevo_datepicker"]
@@ -167,10 +164,9 @@ def editar(id):
 
     return redirect(url_for("tareas"))
 
+
 if __name__ == "__main__":
     # En la siguiente linea estamos indicando a SQLAlchemy que cree, si no existen,
     # las tablas de todos los modelos que encuentre en models.py
     db.Base.metadata.create_all(db.engine)
-    #from waitress import serve
-    #serve(app, host="0.0.0.0", port=5000)
     app.run(debug=True)
