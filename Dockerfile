@@ -10,9 +10,8 @@ RUN pip install -r requirements.txt
 
 FROM python:3.11-alpine as deploy
 
+RUN pip install waitress
 COPY --from=base . .
 COPY . .
 
-EXPOSE 8000
-
-CMD ["python", "main.py"]
+CMD ["waitress-serve", "--host=127.0.0.1", "--port=5000", "--call=main:app"]

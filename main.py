@@ -1,9 +1,11 @@
 from datetime import datetime
+import logging
 from flask import Flask, render_template, request, redirect, url_for, flash, session, g, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import User, Tarea
 import db
 
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(message)s')
 
 app = Flask(__name__)
 app.secret_key = 'dev'
@@ -164,9 +166,11 @@ def editar(id):
 
     return redirect(url_for("tareas"))
 
+def run_server():
+    db.Base.metadata.create_all(db.engine)
+    app.run(host="127.0.0.1", port=5000)
 
 if __name__ == "__main__":
     # En la siguiente linea estamos indicando a SQLAlchemy que cree, si no existen,
     # las tablas de todos los modelos que encuentre en models.py
-    db.Base.metadata.create_all(db.engine)
-    app.run(debug=False)
+    run_server()
